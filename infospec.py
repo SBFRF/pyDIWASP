@@ -44,6 +44,8 @@ def infospec(SM):
         'compass bearing'.format(DTp, compangle(DTp, SM['xaxisdir'])))
     print('Dominant direction: {} axis angle / {} ' 
         'compass bearing'.format(Dp, compangle(Dp, SM['xaxisdir'])))
+    
+    return H, Tp, DTp, Dp
 
 def compangle(dirs, xaxisdir):
     return (180 + xaxisdir * np.ones(np.shape(dirs)) - dirs) % 360
