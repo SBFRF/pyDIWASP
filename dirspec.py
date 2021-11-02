@@ -99,7 +99,7 @@ def dirspec(ID, SM, EP, Options_=None):
     print('wavenumbers')
     wns = wavenumber(2  * np.pi * F, ID['depth'] * np.ones(np.shape(F)))
     pidirs = np.linspace(-np.pi, np.pi - 2 * np.pi / EP['dres'], 
-        num=2 * np.pi / (2 * np.pi / EP['dres']))
+        num=EP['dres'])
 
     #calculate transfer parameters
     print('transfer parameters\n')
