@@ -2,6 +2,8 @@
 conversion of diwasp package (DIWASP: DIrectional WAve SPectrum analysis Version 1.4) for python
 converted from https://github.com/metocean/diwasp
 
+I would lOVE help making this into a more pythonic representation of the original diwasp tool.  check issues for needed functionality adds.  
+
 ## Toolbox contents:
 ### Main functions:
 - dirspec.m           Main function for directional wave analysis
