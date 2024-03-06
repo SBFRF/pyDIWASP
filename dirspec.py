@@ -1,7 +1,6 @@
 import warnings
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.io as sio
 from scipy.signal import detrend
 from interpspec import interpspec
 from infospec import infospec

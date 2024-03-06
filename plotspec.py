@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from private.spectobasis import spectobasis
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
 
 def plotspec(SM, ptype):
     """

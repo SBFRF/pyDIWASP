@@ -1,6 +1,5 @@
 import warnings
 import numpy as np
-import matplotlib.pyplot as plt
 from numpy.linalg import inv
 
 def IMLM(xps, trm, kx, Ss, pidirs, miter, displ):
