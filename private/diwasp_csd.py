@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.signal import spectral
+from scipy.signal import csd
 
 def diwasp_csd(x, y, nfft, fs):
     """
@@ -12,10 +12,10 @@ def diwasp_csd(x, y, nfft, fs):
     flag = 1
 
     if flag == 1:
-        f, S = spectral.csd(y, x, fs=fs, window='hamming', nperseg=nfft, 
+        f, S = csd(y, x, fs=fs, window='hamming', nperseg=nfft,
             noverlap=0, nfft=nfft, detrend=False)
     else:
-        hann = 0.5 * (1 - np.cos(2 * np.pi * np.arange(1, int(nfft / 2) + 1) / 
+        hann = 0.5 * (1 - np.cos(2 * np.pi * np.arange(1, int(nfft / 2) + 1) /
             (nfft + 1)))
         win = np.hstack((hann, np.flipud(hann)))
         nw = np.size(win)
