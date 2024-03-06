@@ -21,9 +21,9 @@ def dirspec(ID, SM, EP, Options_=None):
     """
     DIWASP V1.4 function
     dirspec: main spectral estimation routine
-    
+
     [SMout,EPout]=dirspec(ID,SM,EP,{options})
-    
+
     Outputs:
     SMout	    A spectral matrix structure containing the results
     Epout		The estimation parameters structure with the values actually used for the computation including any default settings.
@@ -37,17 +37,17 @@ def dirspec(ID, SM, EP, Options_=None):
                         'MESSAGE',1,    Level of screen display: 0,1,2 (increasing output)
                         'PLOTTYPE',1,   Plot type: 0 none, 1 3d surface, 2 polar type plot, 3 3d surface(compass angles), 4 polar plot(compass angles)
                         'FILEOUT',''  	 Filename for output file: empty string means no file output
-                    
+
     Input structures ID and SM are required. Either [EP] or [options] can be included but must be in order if both are included.
     "help data_structures" for information on the DIWASP data structures
 
     All of the implemented calculation algorithms are as described by:
-    Hashimoto,N. 1997 "Analysis of the directional wave spectrum from field data" 
+    Hashimoto,N. 1997 "Analysis of the directional wave spectrum from field data"
     In: Advances in Coastal Engineering Vol.3. Ed:Liu,P.L-F. Pub:World Scientific,Singapore
-    
+
 
     Original copyright (C) 2002 Coastal Oceanography Group, CWR, UWA, Perth
-    
+
     Translated by Chuan Li and Spicer Bak,
     Field Research Facility, US Army Corps of Engineers
     """
@@ -56,12 +56,15 @@ def dirspec(ID, SM, EP, Options_=None):
 
     nopts = len(Options_)
 
-    ID = check_data(ID, 1); 
-    if len(ID) == 0: return [], []
-    SM = check_data(SM, 2); 
-    if len(SM) == 0: return [], []
-    EP = check_data(EP, 3); 
-    if len(EP) == 0: return [], []
+    ID = check_data(ID, 1)
+    if len(ID) == 0:
+        return [], []
+    SM = check_data(SM, 2)
+    if len(SM) == 0:
+        return [], []
+    EP = check_data(EP, 3)
+    if len(EP) == 0:
+        return [], []
 
     if nopts != 0:
         if nopts % 2 != 0:
@@ -73,7 +76,9 @@ def dirspec(ID, SM, EP, Options_=None):
                 field = Options_[2 * i]
                 Options[field] = arg
 
-    ptype = Options['PLOTTYPE']; displ = Options['MESSAGE']
+    ptype = Options['PLOTTYPE']
+    displ = Options['MESSAGE']
+
 
     print('\ncalculating.....\n\ncross power spectra')
 
@@ -86,7 +91,8 @@ def dirspec(ID, SM, EP, Options_=None):
         EP['nfft'] = nfft
     else:
         nfft = int(EP['nfft'])
-    if nfft > ndat: raise Exception('Data length of {} too small'.format(dat))
+    if nfft > ndat:
+        raise Exception('Data length of {} too small'.format(ndat))
 
     #calculate the cross-power spectra
     xps = np.empty((szd, szd, int(nfft / 2)), 'complex128')
@@ -94,11 +100,12 @@ def dirspec(ID, SM, EP, Options_=None):
         for n in range(szd):
             xpstmp, Ftmp = diwasp_csd(data[:, m], data[:, n], nfft, ID['fs'])
             xps[m, n, :] = xpstmp[1:int(nfft / 2) + 1]
-    F = Ftmp[1:int(nfft / 2) + 1]; nf = int(nfft / 2)
+    F = Ftmp[1:int(nfft / 2) + 1]
+    nf = int(nfft / 2)
 
     print('wavenumbers')
     wns = wavenumber(2  * np.pi * F, ID['depth'] * np.ones(np.shape(F)))
-    pidirs = np.linspace(-np.pi, np.pi - 2 * np.pi / EP['dres'], 
+    pidirs = np.linspace(-np.pi, np.pi - 2 * np.pi / EP['dres'],
         num=EP['dres'])
 
     #calculate transfer parameters
@@ -106,11 +113,11 @@ def dirspec(ID, SM, EP, Options_=None):
     trm = np.empty((szd, nf, len(pidirs)))
     kx = np.empty((szd, szd, nf, len(pidirs)))
     for m in range(szd):
-        trm[m, :, :] = eval(ID['datatypes'][m])(2 * np.pi * F, pidirs, wns, 
+        trm[m, :, :] = eval(ID['datatypes'][m])(2 * np.pi * F, pidirs, wns,
             ID['layout'][2, m], ID['depth'])
         for n in range(szd):
-            kx[m, n, :, :] = wns[:, np.newaxis] * ((ID['layout'][0, n] - 
-                ID['layout'][0, m]) * np.cos(pidirs) + (ID['layout'][1, n] - 
+            kx[m, n, :, :] = wns[:, np.newaxis] * ((ID['layout'][0, n] -
+                ID['layout'][0, m]) * np.cos(pidirs) + (ID['layout'][1, n] -
                 ID['layout'][1, m]) * np.sin(pidirs))
 
     Ss = np.empty((szd, nf), dtype='complex128')
@@ -118,7 +125,7 @@ def dirspec(ID, SM, EP, Options_=None):
         tfn = trm[m, :, :]
         Sxps = xps[m, m, :]
         Ss[m, :] = Sxps / (np.max(tfn, axis=1) * np.conj(np.max(tfn, axis=1)))
-    
+
     ffs = np.logical_and(F >= np.min(SM['freqs']), F <= np.max(SM['freqs']))
     SM1 = dict()
     SM1['freqs'] = F[ffs]
@@ -128,7 +135,7 @@ def dirspec(ID, SM, EP, Options_=None):
 
     # call appropriate estimation function
     print('directional spectra using {} method'.format(EP['method']))
-    SM1['S'] = eval(EP['method'])(xps[:, :, ffs], trm[:, ffs, :], 
+    SM1['S'] = eval(EP['method'])(xps[:, :, ffs], trm[:, ffs, :],
         kx[:, :, ffs, :], Ss[:, ffs], pidirs, EP['iter'], displ)
     SM1['S'][np.logical_or(np.isnan(SM1['S']), SM1['S'] < 0)] = 0
 
@@ -140,7 +147,7 @@ def dirspec(ID, SM, EP, Options_=None):
     if EP['smooth'].upper() == 'ON':
         print('\nsmoothing spectrum...\n')
         SMout = smoothspec(SMout, [[1, 0.5, 0.25], [1, 0.5, 0.25]])
-    
+
     infospec(SMout)
 
     #write out spectrum matrix in DIWASP format
@@ -156,5 +163,5 @@ def dirspec(ID, SM, EP, Options_=None):
         T = 'Directional spectrum estimate using {} method'.format(EP['method'])
         plt.title(T)
         plt.show()
-    
+
     return SMout, EP

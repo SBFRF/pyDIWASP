@@ -18,7 +18,8 @@ def writespec(SM, filename):
     Copyright (C) 2002 Coastal Oceanography Group, CWR, UWA, Perth
     """
 
-    nf = np.max(SM['freqs'].shape); nd = np.max(SM['dirs'].shape)
+    nf = np.max(SM['freqs'].shape)
+    nd = np.max(SM['dirs'].shape)
 
     streamout = np.empty((nf + nd + 4 + nf * nd))
 

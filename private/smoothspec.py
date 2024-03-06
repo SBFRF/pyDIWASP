@@ -17,7 +17,8 @@ def smoothspec(S, kernel):
 
     nf, nd = np.shape(S['S'])
 
-    Sin = S['S']; Sin[np.isnan(Sin)] = 0
+    Sin = S['S']
+    Sin[np.isnan(Sin)] = 0
 
     S['S'][2:nf - 2, 2:nd - 2] = (f1 * Sin[:nf - 4, 2:nd - 2] + f2 * 
         Sin[1:nf - 3, 2:nd - 2] + f3 * Sin[2:nf - 2, 2:nd - 2] + f2 * 

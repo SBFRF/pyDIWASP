@@ -5,7 +5,7 @@ def check_data(DDS, type_):
     """
     internal DIWASP1.1 function
     checks data structures
-    
+
       DDS=check_data(DDS,type)
           DDS:  the data structure
           type: 1, Instrument data structure;
@@ -22,7 +22,10 @@ def check_data(DDS, type_):
     SM = dict()
     EP = dict()
     SM['xaxisdir'] = 90
-    EP['dres'] = 180; EP['nfft'] = []; EP['method'] = 'IMLM'; EP['iter'] = 100
+    EP['dres'] = 180
+    EP['nfft'] = []
+    EP['method'] = 'IMLM'
+    EP['iter'] = 100
     error = ''
 
     #--------------------------------------------------------------------------
@@ -46,15 +49,15 @@ def check_data(DDS, type_):
             or max(np.shape(DDS['datatypes'])) != nc):
             error = 'datatypes'
         else:
-            DDS['datatypes'] = np.reshape(DDS['datatypes'], 
+            DDS['datatypes'] = np.reshape(DDS['datatypes'],
                 np.size(DDS['datatypes']))
-        
+
         if 'depth' not in DDS or type(DDS['depth']) not in (int, float):
             error = 'depth'
-        
+
         if 'fs' not in DDS or type(DDS['fs']) not in (int, float):
             error = 'fs'
-        
+
         if 'data' in DDS:
             if np.ndim(DDS['data']) < 2 or np.shape(DDS['data'])[1] != nc:
                 error = 'data'
@@ -74,42 +77,42 @@ def check_data(DDS, type_):
         if type(DDS) != dict:
             print('DIWASP data_check: Special matrix data type is not a '
                 'structure')
-        
+
         if 'freqs' in DDS and np.squeeze(DDS['freqs']).ndim == 1:
             nf = np.size(DDS['freqs'])
         else:
             error = 'freqs'
-        
+
         if 'dirs' in DDS and np.squeeze(DDS['dirs']).ndim == 1:
             nd = np.size(DDS['dirs'])
         else:
             error = 'dirs'
-        
+
         if 'S' in DDS:
-            if (np.shape(DDS['S'])[0] != nf or np.ndim(DDS['S']) < 2 or 
+            if (np.shape(DDS['S'])[0] != nf or np.ndim(DDS['S']) < 2 or
                 np.shape(DDS['S'])[1] != nd):
                 error = 'S'
             else:
                 DDS['S'] = []
-        
+
         if 'xaxisdir' in DDS:
             if type(DDS['xaxisdir']) not in (int, float):
                 error = 'xaxisdir'
         else:
             DDS['xaxisdir'] = SM['xaxisdir']
-        
+
         if 'dunit' not in DDS:
             DDS['dunit'] = 'cart'
-        
+
         if 'funit' not in DDS:
             DDS['funit'] = 'hz'
-        
+
         if len(error) != 0:
             print('\nSpectral matrix structure error: field [{}] not '
                 'specified correctly'.format(error))
             DDS = []
             return DDS
-    
+
     #--------------------------------------------------------------------------
     # Estimation parameters
     #--------------------------------------------------------------------------
@@ -117,17 +120,17 @@ def check_data(DDS, type_):
         if type(DDS) != dict:
             print('DIWASP data_check: Estimation parameter data type is not a '
                 'structure')
-        
+
         if 'dres' in DDS:
             if type(DDS['dres']) not in (int, float):
                 error = 'dres'
             elif DDS['dres'] < 10:
                 DDS['dres'] = 10
                 warnings.warn('dres is too small and has been set to 10')
-            
+
         else:
             DDS['dres'] = EP['dres']
-        
+
         if 'nfft' in DDS:
             if type(DDS['nfft']) not in (int, float):
                 error = 'nfft'
@@ -136,35 +139,35 @@ def check_data(DDS, type_):
                 warnings.warn('nfft is too small and has been set to 64')
         else:
             DDS['nfft'] = EP['nfft']
-        
+
         if 'iter' in DDS:
             if type(DDS['iter']) not in (int, float):
                 error = 'iter'
         else:
             DDS['iter'] = EP['iter']
-        
+
         if 'smooth' in DDS:
             if DDS['smooth'].upper() != 'OFF':
                 DDS['smooth'] = 'ON'
         else:
             DDS['smooth'] = 'ON'
-        
+
         if 'method' not in DDS:
             if DDS['method'].upper() not in ('DFTM', 'EMLM', 'IMLM', 'EMEP',
                 'BDM'):
                 error = 'method'
         else:
             DDS['method'] = EP['method']
-        
+
         if len(error) != 0:
             print('\nEstimation parameters structure error: field [{}] not '
                 'specified correctly')
             DDS = []
             return DDS
-    
+
     if type_ not in (1, 2, 3):
         print()
         warnings.warn('DIWASP data_check: Data type unknown')
         DDS = []
-    
+
     return DDS
