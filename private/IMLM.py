@@ -1,12 +1,10 @@
 import warnings
 import numpy as np
-import matplotlib.pyplot as plt
 from numpy.linalg import inv
 
 def IMLM(xps, trm, kx, Ss, pidirs, miter, displ):
     
     gamma = 0.1
-    beta = 1.0
     alpha = 0.1
 
     szd = np.shape(xps)[0]
