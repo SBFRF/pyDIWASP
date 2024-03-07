@@ -54,7 +54,10 @@ def dirspec(ID, SM, EP, Options_=None):
 
     Options = {'MESSAGE':1, 'PLOTTYPE':1, 'FILEOUT':''}
 
-    nopts = len(Options_)
+    if Options_ is not None:
+        nopts = len(Options_)
+    else:
+        nopts = 0
 
     ID = check_data(ID, 1); 
     if len(ID) == 0: return [], []
