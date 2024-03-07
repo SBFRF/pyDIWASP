@@ -35,7 +35,8 @@ def plotspec(SM, ptype):
     fig = plt.figure(tight_layout=True)
 
     SM, sfac = spectobasis(SM) #Convert to basis matrix
-    dirs = SM['dirs']; ffreqs = SM['freqs'] / (2 * np.pi)
+    dirs = SM['dirs']
+    ffreqs = SM['freqs'] / (2 * np.pi)
     S = 2 * np.pi ** 2 * np.real(SM['S'])/ 180
 
     #Convert directions to nautical
@@ -48,7 +49,8 @@ def plotspec(SM, ptype):
     
     #Surface plots
     if ptype == 1 or ptype == 3:
-        if ptype == 3: dirs %= 2 * np.pi
+        if ptype == 3: 
+            dirs %= 2 * np.pi
         order = np.argsort(dirs)
         dirs = (180 * dirs / np.pi)[order]
         ddir, df = np.meshgrid(dirs, ffreqs)
