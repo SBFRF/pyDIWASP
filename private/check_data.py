@@ -22,10 +22,10 @@ def check_data(DDS, type_):
     SM = dict()
     EP = dict()
     SM['xaxisdir'] = 90
-    EP['dres'] = 180
-    EP['nfft'] = []
-    EP['method'] = 'IMLM'
-    EP['iter'] = 100
+    EP['dres'] = EP.get('dres', 180)
+    EP['nfft'] = EP.get('nfft', [])
+    EP['method'] = EP.get('method', 'IMLM')
+    EP['iter'] = EP.get('iter', 100)
     error = ''
 
     #--------------------------------------------------------------------------
@@ -152,7 +152,7 @@ def check_data(DDS, type_):
         else:
             DDS['smooth'] = 'ON'
 
-        if 'method' not in DDS:
+        if 'method' in DDS:
             if DDS['method'].upper() not in ('DFTM', 'EMLM', 'IMLM', 'EMEP',
                 'BDM'):
                 error = 'method'
