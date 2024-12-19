@@ -22,10 +22,10 @@ def check_data(DDS, type_):
     SM = dict()
     EP = dict()
     SM['xaxisdir'] = 90
-    EP['dres'] = EP.get('dres', 180)
-    EP['nfft'] = EP.get('nfft', [])
-    EP['method'] = EP.get('method', 'IMLM')
-    EP['iter'] = EP.get('iter', 100)
+    EP['dres'] = 180
+    EP['nfft'] = []
+    EP['method'] = 'IMLM'
+    EP['iter'] = 100
     error = ''
 
     #--------------------------------------------------------------------------

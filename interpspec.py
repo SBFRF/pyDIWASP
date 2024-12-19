@@ -1,5 +1,5 @@
 import numpy as np
-import warnings
+from warnings import warn
 from scipy.interpolate import griddata
 from private.hsig import hsig
 from private.spectobasis import spectobasis
@@ -34,19 +34,19 @@ def interpspec(SMin, SMout, method='linear'):
     c2 = SMtmp['freqs'][:, np.newaxis] * np.cos(SMtmp['dirs'])
 
     if np.array_equal(s1, s2) and np.array_equal(c1, c2):
-        warnings.warn('No interpolation required, skipping')
+        warn('No interpolation required, skipping')
         Stmp = SMin['S']
     else:
         Stmp = griddata((s1.flatten(), c1.flatten()), SMin['S'].flatten(),
             (s2.flatten(), c2.flatten()), method=method).reshape(s2.shape)
-        Stmp[np.isnan(Stmp)] = 0
 
+    Stmp[np.isnan(Stmp)] = 0
     SMout['S'] = Stmp / facout
 
     # check Hsig of mapped spectrum and check sufficiently close to original
     Hs2 = hsig(SMout)
     if (Hs2 - Hs1) / Hs1 > 0.02:
-        warnings.warn('User defined grid may be too coarse; try increasing' +
+        warn('User defined grid may be too coarse; try increasing' +
             ' resolution of ''SM[\'freqs\']'' or ''SM[\'dirs\']''')
 
     return SMout
