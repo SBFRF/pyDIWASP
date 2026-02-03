@@ -7,9 +7,6 @@ import numpy as np
 import pytest
 import tempfile
 from dirspec import dirspec
-from private.check_data import check_data
-
-
 class TestDirspecIntegration:
     """Integration tests for the main dirspec analysis function."""
     
