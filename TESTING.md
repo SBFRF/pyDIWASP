@@ -160,7 +160,7 @@ pytest tests/test_core.py::TestWavenumber::test_wavenumber_basic -v
 - Package metadata and configuration
 - Dependency specifications
 - Entry points and classifiers
-- Supports Python 3.7+
+- Supports Python 3.8+
 
 #### `requirements.txt`
 - Runtime dependencies (numpy, scipy, matplotlib)
