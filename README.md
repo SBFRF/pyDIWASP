@@ -9,7 +9,7 @@ Converted from: https://github.com/metocean/diwasp
 ## Features
 
 - **Directional Wave Analysis**: Estimate directional wave spectra from instrument array data
-- **Multiple Estimation Methods**: Supports IMLM, EMEP, EMLM, DFTM, and BDM methods
+- **Multiple Estimation Methods**: Supports IMLM and EMEP methods
 - **Flexible Input**: Works with various instrument types (pressure, velocity, elevation sensors)
 - **Visualization**: Built-in plotting functions for 3D and polar spectral plots
 - **Wave Statistics**: Calculate significant wave height, peak period, and dominant direction
