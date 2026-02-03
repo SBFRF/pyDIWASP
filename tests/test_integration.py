@@ -5,13 +5,7 @@ This test creates synthetic wave data and runs it through the full analysis pipe
 """
 import numpy as np
 import pytest
-import sys
-import os
 import tempfile
-
-# Add parent directory to path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from dirspec import dirspec
 from private.check_data import check_data
 
