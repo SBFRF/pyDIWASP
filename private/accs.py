@@ -27,6 +27,7 @@ def accz(ffreqs, dirs, wns, z, depth):
     
     # Include a maximum cutoff for the acceleration response function
     Kz[Kz < 0.1] = 0.1
+    Kz[np.isnan(Kz)] = 1
     
     trm = (ffreqs * ffreqs * Kz)[:, np.newaxis] * np.ones(np.shape(dirs))
     

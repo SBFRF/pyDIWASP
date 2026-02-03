@@ -73,7 +73,7 @@ def BDM(xps, trm, kx, Ss, pidirs, miter, displ):
                 Hhs = np.conj(trm[n, ff, :ddirs])
                 Htemp = Hh * Hhs * expx
                 
-                if Htemp[0] != Htemp[1]:
+                if not np.allclose(Htemp[0], Htemp[1]):
                     phi[index, ff] = np.real(xps[m, n, ff]) / (sigCo[m, n, ff] * Ss[0, ff])
                     H[:ddirs, index, ff] = np.real(Htemp) / sigCo[m, n, ff]
                     index += 1
