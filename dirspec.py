@@ -18,7 +18,6 @@ from private.accs import accs, accz
 from private.wavenumber import wavenumber
 from private.IMLM import IMLM
 from private.EMEP import EMEP
-from private.BDM import BDM
 from private.smoothspec import smoothspec
 from private.diwasp_csd import diwasp_csd
 from private.check_data import check_data
