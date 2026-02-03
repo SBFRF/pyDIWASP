@@ -17,10 +17,10 @@ pip install -r requirements.txt
 ```
 
 ### Requirements
-- Python 3.7+
-- NumPy >= 1.20.0
-- SciPy >= 1.7.0
-- Matplotlib >= 3.3.0
+- Python 3.8+
+- NumPy >= 1.20.0, < 2.0
+- SciPy >= 1.7.0, < 2.0
+- Matplotlib >= 3.3.0, < 4.0
 
 ## Testing
 
