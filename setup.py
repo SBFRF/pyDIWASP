@@ -31,7 +31,7 @@ setup(
     # Specify modules explicitly since the package structure is flat
     py_modules=['dirspec', 'infospec', 'interpspec', 'plotspec', 'writespec'],
     packages=['private'],
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=[
         'numpy>=1.15.0',
         'scipy>=1.1.0',
@@ -43,12 +43,11 @@ setup(
         'Topic :: Scientific/Engineering :: Physics',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Operating System :: OS Independent',
     ],
     keywords='oceanography waves spectrum directional wave analysis diwasp',
