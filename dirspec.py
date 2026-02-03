@@ -2,20 +2,20 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import detrend
-from interpspec import interpspec
-from infospec import infospec
-from writespec import writespec
-from plotspec import plotspec
-from private.velx import velx
-from private.vely import vely
-from private.pres import pres
-from private.elev import elev
-from private.wavenumber import wavenumber
-from private.IMLM import IMLM
-from private.EMEP import EMEP
-from private.smoothspec import smoothspec
-from private.diwasp_csd import diwasp_csd
-from private.check_data import check_data
+from .interpspec import interpspec
+from .infospec import infospec
+from .writespec import writespec
+from .plotspec import plotspec
+from .private.velx import velx
+from .private.vely import vely
+from .private.pres import pres
+from .private.elev import elev
+from .private.wavenumber import wavenumber
+from .private.IMLM import IMLM
+from .private.EMEP import EMEP
+from .private.smoothspec import smoothspec
+from .private.diwasp_csd import diwasp_csd
+from .private.check_data import check_data
 
 def dirspec(ID, SM, EP, Options_=None):
     """
