@@ -10,9 +10,7 @@ import io
 import os
 from contextlib import redirect_stdout
 
-from infospec import infospec
-from interpspec import interpspec
-from writespec import writespec
+from pydiwasp import infospec, interpspec, writespec
 
 
 class TestInfospec:
@@ -106,7 +104,7 @@ class TestInterpspec:
     
     def test_interpspec_preserves_energy(self):
         """Test that interpolation approximately preserves energy."""
-        from private.hsig import hsig
+        from pydiwasp.private.hsig import hsig
         
         # Create a peaked spectrum
         freqs_in = np.linspace(0.05, 0.5, 15)

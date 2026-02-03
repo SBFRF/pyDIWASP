@@ -16,20 +16,20 @@ Converted from: https://github.com/metocean/diwasp
 
 ## Installation
 
-### Basic Installation
+### From Source
 
 ```bash
 # Clone the repository
 git clone https://github.com/SBFRF/pyDIWASP.git
 cd pyDIWASP
 
-# Install dependencies
-pip install numpy scipy matplotlib
+# Install the package
+pip install -e .
 ```
 
 ### Requirements
 
-- Python 3.6+
+- Python 3.8+
 - NumPy
 - SciPy
 - Matplotlib
@@ -38,7 +38,7 @@ pip install numpy scipy matplotlib
 
 ```python
 import numpy as np
-from dirspec import dirspec
+from pydiwasp import dirspec
 
 # Define instrument data structure
 ID = {

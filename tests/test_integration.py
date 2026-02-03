@@ -10,7 +10,7 @@ import io
 import os
 from contextlib import redirect_stdout
 
-from dirspec import dirspec
+from pydiwasp import dirspec
 
 
 class TestDirspecIntegration:
