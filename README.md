@@ -122,8 +122,6 @@ Calculate instrument response to waves:
 Directional spectrum estimation algorithms:
 - `IMLM.py` - Iterated Maximum Likelihood Method (default)
 - `EMEP.py` - Extended Maximum Entropy Principle
-- `EMLM.py` - Extended Maximum Likelihood Method
-- (Additional methods: DFTM, BDM)
 
 ### Utility Functions
 - `smoothspec.py` - Spectral smoothing
@@ -153,7 +151,7 @@ Dictionary with the following fields:
 
 ### Estimation Parameters Structure (EP)
 Dictionary with the following fields:
-- `method`: Estimation method ('IMLM', 'EMEP', 'EMLM', 'DFTM', 'BDM')
+- `method`: Estimation method ('IMLM' or 'EMEP')
 - `nfft`: FFT length (auto-calculated if not specified)
 - `dres`: Directional resolution (default: 180)
 - `iter`: Number of iterations for iterative methods (default: 100)
@@ -172,10 +170,7 @@ Dictionary with the following fields:
 - Works well for narrow directional spreads
 - Suitable for swell-dominated conditions
 
-### Other Methods
-- **EMLM**: Extended Maximum Likelihood Method
-- **DFTM**: Direct Fourier Transform Method
-- **BDM**: Bayesian Directional Method
+**Note:** The original DIWASP MATLAB toolbox includes additional methods (EMLM, DFTM, BDM) that are not yet implemented in this Python version. Contributions to add these methods are welcome!
 
 ## Examples
 
