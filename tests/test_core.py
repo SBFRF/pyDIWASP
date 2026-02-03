@@ -6,17 +6,17 @@ by testing the main functions and their expected behavior.
 """
 import numpy as np
 import pytest
-import sys
-import os
 
-# Add parent directory to path to import the modules
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from private.wavenumber import wavenumber
-from private.hsig import hsig
-from private.check_data import check_data
-
-
+try:
+    from private.wavenumber import wavenumber
+    from private.hsig import hsig
+    from private.check_data import check_data
+except ImportError as exc:
+    raise ImportError(
+        "Could not import pyDIWASP modules. Ensure the package is installed, "
+        "for example with 'pip install -e .' from the project root, before "
+        "running the tests."
+    ) from exc
 class TestWavenumber:
     """Tests for the wavenumber calculation function."""
     
