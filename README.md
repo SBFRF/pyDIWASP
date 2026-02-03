@@ -212,3 +212,20 @@ The GNU General Public License forms the main part of the license agreement incl
 
 Copyright (C) 2002 David Johnson   Coastal Oceanography Group, CWR, UWA, Perth
 
+## CI/CD Pipeline
+
+This repository includes GitHub Actions workflows for:
+
+### Continuous Integration (CI)
+- Automated testing on Python 3.8, 3.9, 3.10, 3.11, and 3.12
+- Code linting with flake8
+- Code coverage reporting
+- Runs on all pull requests and pushes to main branches
+
+### Deployment to PyPI
+- Automated publishing to PyPI on release
+- Manual deployment option via GitHub Actions
+- Support for Test PyPI for pre-release testing
+
+See [`.github/workflows/README.md`](.github/workflows/README.md) for more details on the CI/CD setup.
+

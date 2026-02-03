@@ -61,5 +61,4 @@ coverage.xml
 .DS_Store
 Thumbs.db
 
-# Test files
-examples/test_notebook.py
+
