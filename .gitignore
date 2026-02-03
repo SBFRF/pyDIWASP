@@ -20,41 +20,37 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # PyInstaller
 *.manifest
 *.spec
 
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
-.nox/
 .coverage
 .coverage.*
 .cache
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
 .hypothesis/
 .pytest_cache/
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# IDE
+# pyenv
+.python-version
+
+# IDEs
 .vscode/
 .idea/
 *.swp
@@ -65,6 +61,4 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-# Temporary files
-/tmp/
-*.tmp
+
