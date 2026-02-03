@@ -1,0 +1,12 @@
+include README.md
+include License.md
+include CONTRIBUTING.md
+include CHANGES_SUMMARY.md
+include TESTING.md
+include requirements.txt
+include pytest.ini
+recursive-include examples *.ipynb
+recursive-include tests *.py
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store

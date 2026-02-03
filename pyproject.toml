@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyDIWASP"
+version = "0.1.0"
+description = "Python conversion of DIWASP: DIrectional WAve SPectrum analysis"
+readme = "README.md"
+authors = [
+    {name = "SBFRF", email = "support@sbfrf.org"}
+]
+license = {text = "GPL-3.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.20.0,<2.0",
+    "scipy>=1.7.0,<2.0",
+    "matplotlib>=3.3.0,<4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/SBFRF/pyDIWASP"
+Repository = "https://github.com/SBFRF/pyDIWASP"
+
+[tool.setuptools.packages.find]
+include = ["pydiwasp*"]
