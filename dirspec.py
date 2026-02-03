@@ -10,6 +10,8 @@ from private.velx import velx
 from private.vely import vely
 from private.pres import pres
 from private.elev import elev
+from private.vels import vels
+from private.accs import accs, accz
 from private.wavenumber import wavenumber
 from private.IMLM import IMLM
 from private.EMEP import EMEP
