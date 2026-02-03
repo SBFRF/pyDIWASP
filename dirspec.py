@@ -8,7 +8,6 @@ from writespec import writespec
 from plotspec import plotspec
 from private.velx import velx
 from private.vely import vely
-from private.velz import velz
 from private.pres import pres
 from private.elev import elev
 from private.slpx import slpx
