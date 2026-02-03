@@ -1,4 +1,4 @@
-from private.velz import velz
+from .velz import velz
 
 def vels(ffreqs, dirs, wns, z, depth):
     """

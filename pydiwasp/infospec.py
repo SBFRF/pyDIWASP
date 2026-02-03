@@ -1,5 +1,5 @@
 import numpy as np
-from private.hsig import hsig
+from .private.hsig import hsig
 
 def infospec(SM):
     """

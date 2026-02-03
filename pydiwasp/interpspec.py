@@ -1,8 +1,8 @@
 import numpy as np
 from warnings import warn
 from scipy.interpolate import griddata
-from private.hsig import hsig
-from private.spectobasis import spectobasis
+from .private.hsig import hsig
+from .private.spectobasis import spectobasis
 
 def interpspec(SMin, SMout, method='linear'):
     """
