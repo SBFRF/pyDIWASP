@@ -30,7 +30,8 @@ class TestCoreFunctions(unittest.TestCase):
     def test_check_data_adjusts_dres_and_nfft_to_minimum_values(self):
         ep = {"dres": 5, "nfft": 32, "iter": 10, "smooth": "off", "method": "IMLM"}
 
-        validated = check_data(ep, 3)
+        with self.assertWarns(Warning):
+            validated = check_data(ep, 3)
 
         self.assertEqual(validated["dres"], 10)
         self.assertEqual(validated["nfft"], 64)
