@@ -5,10 +5,14 @@ These tests document the high-level API and expected workflow of the package.
 """
 import numpy as np
 import pytest
+import tempfile
+import io
+import os
+from contextlib import redirect_stdout
+
 from infospec import infospec
 from interpspec import interpspec
 from writespec import writespec
-import tempfile
 
 
 class TestInfospec:
@@ -22,8 +26,8 @@ class TestInfospec:
         
         # Create a peaked spectrum at 0.1 Hz and 0 degrees
         S = np.zeros((len(freqs), len(dirs)))
-        peak_f_idx = np.argmin(np.abs(freqs - 0.1))
-        peak_d_idx = np.argmin(np.abs(dirs - 0.0))
+        _ = np.argmin(np.abs(freqs - 0.1))
+        _ = np.argmin(np.abs(dirs - 0.0))
         
         for i, f in enumerate(freqs):
             for j, d in enumerate(dirs):
@@ -37,9 +41,6 @@ class TestInfospec:
         }
         
         # Capture output (infospec prints to console)
-        import io
-        from contextlib import redirect_stdout
-        
         f = io.StringIO()
         with redirect_stdout(f):
             Hsig, Tp, DTp, Dp = infospec(SM)
@@ -61,9 +62,6 @@ class TestInfospec:
             'S': S,
             'xaxisdir': 90
         }
-        
-        import io
-        from contextlib import redirect_stdout
         
         f = io.StringIO()
         with redirect_stdout(f):

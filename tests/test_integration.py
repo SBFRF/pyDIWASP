@@ -6,7 +6,13 @@ This test creates synthetic wave data and runs it through the full analysis pipe
 import numpy as np
 import pytest
 import tempfile
+import io
+import os
+from contextlib import redirect_stdout
+
 from dirspec import dirspec
+
+
 class TestDirspecIntegration:
     """Integration tests for the main dirspec analysis function."""
     
@@ -73,8 +79,6 @@ class TestDirspecIntegration:
     def test_dirspec_basic_run(self, synthetic_wave_data, spectral_matrix_template, 
                                estimation_parameters):
         """Test that dirspec runs without errors on synthetic data."""
-        import io
-        from contextlib import redirect_stdout
         
         # Redirect stdout to suppress print statements
         f = io.StringIO()
@@ -96,8 +100,6 @@ class TestDirspecIntegration:
     def test_dirspec_output_structure(self, synthetic_wave_data, spectral_matrix_template,
                                      estimation_parameters):
         """Test that dirspec output has expected structure."""
-        import io
-        from contextlib import redirect_stdout
         
         f = io.StringIO()
         
@@ -131,8 +133,6 @@ class TestDirspecIntegration:
     def test_dirspec_with_different_methods(self, synthetic_wave_data, 
                                            spectral_matrix_template):
         """Test dirspec with different estimation methods."""
-        import io
-        from contextlib import redirect_stdout
         
         methods = ['IMLM', 'EMEP']
         
@@ -164,8 +164,6 @@ class TestDirspecIntegration:
     def test_dirspec_file_output(self, synthetic_wave_data, spectral_matrix_template,
                                 estimation_parameters):
         """Test that dirspec can write output to file."""
-        import io
-        from contextlib import redirect_stdout
         
         # Create temporary file
         with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
@@ -174,7 +172,7 @@ class TestDirspecIntegration:
         try:
             stdout_f = io.StringIO()
             with redirect_stdout(stdout_f):
-                SMout, EPout = dirspec(
+                _, _ = dirspec(
                     synthetic_wave_data,
                     spectral_matrix_template,
                     estimation_parameters,
@@ -197,8 +195,6 @@ class TestDirspecIntegration:
                                            spectral_matrix_template,
                                            estimation_parameters):
         """Test that dirspec correctly identifies the dominant frequency."""
-        import io
-        from contextlib import redirect_stdout
         
         f = io.StringIO()
         with redirect_stdout(f):
@@ -228,8 +224,6 @@ class TestDataValidationIntegration:
     
     def test_invalid_instrument_data_rejected(self):
         """Test that invalid instrument data is properly rejected."""
-        import io
-        from contextlib import redirect_stdout
         
         # Invalid ID: missing required fields (depth and fs)
         # Use 3-row layout to avoid check_data bug with 2-row layouts

@@ -71,8 +71,8 @@ class TestHsig:
         # Create a simple spectral matrix
         freqs = np.linspace(0.05, 0.5, 10)
         dirs = np.linspace(-np.pi, np.pi, 36)
-        df = freqs[1] - freqs[0]
-        ddir = dirs[1] - dirs[0]
+        _ = freqs[1] - freqs[0]
+        _ = dirs[1] - dirs[0]
         
         # Create a simple Gaussian-like spectrum
         S = np.zeros((len(freqs), len(dirs)))
