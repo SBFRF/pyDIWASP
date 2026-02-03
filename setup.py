@@ -10,7 +10,7 @@ setup(
     name="pyDIWASP",
     version="0.1.0",
     author="SBFRF",
-    author_email="",
+    author_email="support@sbfrf.org",
     description="Python conversion of DIWASP: DIrectional WAve SPectrum analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
