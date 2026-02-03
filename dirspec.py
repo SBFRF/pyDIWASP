@@ -89,7 +89,7 @@ def dirspec(ID, SM, EP, Options_=None):
     ndat, szd = np.shape(ID['data'])
 
     #get resolution of FFT - if not specified, calculate a sensible value
-    if 'nfft' not in EP:
+    if 'nfft' not in EP or not EP['nfft']:
         nfft = int(2 ** (8 + np.round(np.log2(ID['fs']))))
         EP['nfft'] = nfft
     else:
