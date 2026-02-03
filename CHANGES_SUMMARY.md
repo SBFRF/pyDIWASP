@@ -43,7 +43,7 @@ This PR implements a comprehensive test suite and CI/CD pipeline for pyDIWASP to
 
 #### setup.py
 - Package metadata and dependencies
-- Python 3.7+ compatibility
+- Python 3.8+ compatibility
 - PyPI classifiers and license info
 
 #### requirements.txt
