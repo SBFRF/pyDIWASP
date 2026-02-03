@@ -14,7 +14,7 @@ from private.elev import elev
 from private.slpx import slpx
 from private.slpy import slpy
 from private.vels import vels
-from private.accs import accs
+from private.accs import accs, accz
 from private.wavenumber import wavenumber
 from private.IMLM import IMLM
 from private.EMEP import EMEP
