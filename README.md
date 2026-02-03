@@ -27,12 +27,16 @@ I would LOVE help making this into better package of the original diwasp tool. P
 - /private/vels.m
 - /private/accs.m
 
+All transfer functions are now implemented in pyDIWASP!
+
 ### The estimation functions
 - /private/DFTM.m
 - /private/EMLM.m
 - /private/IMLM.m
 - /private/EMEP.m
 - /private/BDM.m
+
+All estimation methods are now implemented in pyDIWASP!
 
 ### Miscellaneous functions
 - /private/smoothspec.m
