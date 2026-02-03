@@ -1,4 +1,3 @@
-import numpy as np
 from private.velz import velz
 
 def vels(ffreqs, dirs, wns, z, depth):
