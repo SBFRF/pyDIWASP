@@ -26,8 +26,8 @@ def velz(ffreqs, dirs, wns, z, depth):
     Kz = np.sinh(z * wns) / np.sinh(depth * wns)
     
     # Include a maximum cutoff for the velocity response function
-    Kz[Kz < 0.1] = 0.1
     Kz[np.isnan(Kz)] = 1
+    Kz[Kz < 0.1] = 0.1
     
     trm = -1j * (ffreqs * Kz)[:, np.newaxis] * np.ones(np.shape(dirs))
     
