@@ -6,7 +6,7 @@ from private.check_data import check_data
 
 
 class TestCoreFunctions(unittest.TestCase):
-    def test_hsig_computes_expected_value(self):
+    def test_hsig_calculates_significant_wave_height(self):
         freqs = np.array([1.0, 2.0])
         dirs = np.array([0.0, np.pi / 2])
         S = np.ones((2, 2))
@@ -17,7 +17,7 @@ class TestCoreFunctions(unittest.TestCase):
         expected = 4 * np.sqrt(
             np.sum(S) * (freqs[1] - freqs[0]) * (dirs[1] - dirs[0])
         )
-        self.assertTrue(np.isclose(result, expected))
+        self.assertAlmostEqual(result, expected)
 
     def test_compangle_converts_to_compass_bearing(self):
         angle = 90
@@ -34,6 +34,9 @@ class TestCoreFunctions(unittest.TestCase):
 
         self.assertEqual(validated["dres"], 10)
         self.assertEqual(validated["nfft"], 64)
+        self.assertEqual(validated["iter"], 10)
+        self.assertEqual(validated["smooth"], "off")
+        self.assertEqual(validated["method"], "IMLM")
 
 
 if __name__ == "__main__":
