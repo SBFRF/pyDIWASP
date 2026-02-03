@@ -1,8 +1,47 @@
 # pyDiwasp
+
+[![CI](https://github.com/SBFRF/pyDIWASP/actions/workflows/ci.yml/badge.svg)](https://github.com/SBFRF/pyDIWASP/actions/workflows/ci.yml)
+
 conversion of diwasp package (DIWASP: DIrectional WAve SPectrum analysis Version 1.4) for python
 converted from https://github.com/metocean/diwasp
 
-I would LOVE help making this into better package of the original diwasp tool. Please check issues for needed functionality adds.  
+I would LOVE help making this into better package of the original diwasp tool. Please check issues for needed functionality adds.
+
+## Installation
+
+### From source
+```bash
+git clone https://github.com/SBFRF/pyDIWASP.git
+cd pyDIWASP
+pip install -r requirements.txt
+```
+
+### Requirements
+- Python 3.7+
+- NumPy >= 1.20.0
+- SciPy >= 1.7.0
+- Matplotlib >= 3.3.0
+
+## Testing
+
+The package includes a comprehensive test suite that documents the existing capabilities:
+
+```bash
+# Install test dependencies
+pip install pytest pytest-cov
+
+# Run all tests
+pytest tests/ -v
+
+# Run tests with coverage
+pytest tests/ -v --cov=. --cov-report=term
+```
+
+**Test Coverage:**
+- 25 tests covering core functionality
+- Core functions: wavenumber calculations, wave height calculations, data validation
+- API functions: spectrum info, interpolation, file I/O
+- Integration tests: full directional analysis workflow
 
 ## Toolbox contents:
 ### Main functions:
@@ -61,4 +100,21 @@ software output for any design or decision-making process.
 The GNU General Public License forms the main part of the license agreement included in the package. 
 
 Copyright (C) 2002 David Johnson   Coastal Oceanography Group, CWR, UWA, Perth
+
+## CI/CD Pipeline
+
+This repository includes GitHub Actions workflows for:
+
+### Continuous Integration (CI)
+- Automated testing on Python 3.8, 3.9, 3.10, 3.11, and 3.12
+- Code linting with flake8
+- Code coverage reporting
+- Runs on all pull requests and pushes to main branches
+
+### Deployment to PyPI
+- Automated publishing to PyPI on release
+- Manual deployment option via GitHub Actions
+- Support for Test PyPI for pre-release testing
+
+See [`.github/workflows/README.md`](.github/workflows/README.md) for more details on the CI/CD setup.
 
