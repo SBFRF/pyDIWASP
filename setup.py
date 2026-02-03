@@ -3,7 +3,7 @@
 Setup script for pyDIWASP package
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 
 # Read the contents of README file
@@ -28,7 +28,9 @@ setup(
     author_email='',
     url='https://github.com/SBFRF/pyDIWASP',
     license='GPLv3',
-    packages=find_packages(),
+    # Specify modules explicitly since the package structure is flat
+    py_modules=['dirspec', 'infospec', 'interpspec', 'plotspec', 'writespec'],
+    packages=['private'],
     python_requires='>=3.6',
     install_requires=[
         'numpy>=1.15.0',

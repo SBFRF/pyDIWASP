@@ -1,3 +1,3 @@
 include README.md
 include License.md
-recursive-include pyDIWASP *.py
+recursive-include private *.py
