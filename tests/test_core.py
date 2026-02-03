@@ -25,7 +25,7 @@ class TestCoreFunctions(unittest.TestCase):
 
         result = compangle(angle, xaxisdir)
 
-        self.assertEqual(result, 180)
+        self.assertEqual(result.item(), 180)
 
     def test_check_data_adjusts_dres_and_nfft_to_minimum_values(self):
         ep = {"dres": 5, "nfft": 32, "iter": 10, "smooth": "off", "method": "IMLM"}
