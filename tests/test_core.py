@@ -19,7 +19,7 @@ class TestCoreFunctions(unittest.TestCase):
         )
         self.assertAlmostEqual(result, expected)
 
-    def test_compangle_converts_90deg_angle_with_90deg_xaxis_to_180_bearing(self):
+    def test_compangle_90deg_angle_90deg_xaxis(self):
         angle = 90
         xaxisdir = 90
 
