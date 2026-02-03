@@ -1,0 +1,44 @@
+import unittest
+import numpy as np
+from infospec import compangle
+from private.hsig import hsig
+from private.check_data import check_data
+
+
+class TestCoreFunctions(unittest.TestCase):
+    def test_hsig_calculates_significant_wave_height(self):
+        freqs = np.array([1.0, 2.0])
+        dirs = np.array([0.0, np.pi / 2])
+        S = np.ones((2, 2))
+        SM = {"freqs": freqs, "dirs": dirs, "S": S}
+
+        result = hsig(SM)
+
+        expected = 4 * np.sqrt(
+            np.sum(S) * (freqs[1] - freqs[0]) * (dirs[1] - dirs[0])
+        )
+        self.assertAlmostEqual(result, expected)
+
+    def test_compangle_90deg_angle_90deg_xaxis(self):
+        angle = 90
+        xaxisdir = 90
+
+        result = compangle(angle, xaxisdir)
+
+        self.assertEqual(result.item(), 180)
+
+    def test_check_data_adjusts_dres_and_nfft_to_minimum_values(self):
+        ep = {"dres": 5, "nfft": 32, "iter": 10, "smooth": "off", "method": "IMLM"}
+
+        with self.assertWarns(Warning):
+            validated = check_data(ep, 3)
+
+        self.assertEqual(validated["dres"], 10)
+        self.assertEqual(validated["nfft"], 64)
+        self.assertEqual(validated["iter"], 10)
+        self.assertEqual(validated["smooth"], "off")
+        self.assertEqual(validated["method"], "IMLM")
+
+
+if __name__ == "__main__":
+    unittest.main()
