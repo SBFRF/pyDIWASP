@@ -1,52 +1,207 @@
-# pyDiwasp
-conversion of diwasp package (DIWASP: DIrectional WAve SPectrum analysis Version 1.4) for python
-converted from https://github.com/metocean/diwasp
+# pyDIWASP
 
-I would LOVE help making this into better package of the original diwasp tool. Please check issues for needed functionality adds.  
+Python conversion of the DIWASP package (DIrectional WAve SPectrum analysis Version 1.4)
 
-## Toolbox contents:
-### Main functions:
-- dirspec.m           Main function for directional wave analysis
-- readspec.m          Reads in DIWASP format spectrum files
-- writespec.m         Writes DIWASP format spectrum files
-- plotspec.m          Plots DIWASP spectrums
-- testspec.m          Testing function for the estimation methods
-- makespec.m          Makes a fake spectrum and generates fake data for testing dirspec.m
-- infospec.m          Returns information about a directional spectrum
-- data_structures.m   is a help file describing the new Version 1.1 data structures
+pyDIWASP is a Python implementation of the DIWASP toolbox for estimating directional wave spectra from wave measurement data. It provides functions to analyze wave measurements from arrays of instruments (e.g., pressure sensors, current meters, wave gauges) and compute the directional distribution of wave energy.
 
-## Private functions (some can be used as stand alone functions):
-### The transfer functions
-- /private/elev.m
-- /private/pres.m
-- /private/velx.m
-- /private/vely.m
-- /private/velz.m
-- /private/slpx.m
-- /private/slpy.m
-- /private/vels.m
-- /private/accs.m
+Converted from: https://github.com/metocean/diwasp
 
-### The estimation functions
-- /private/DFTM.m
-- /private/EMLM.m
-- /private/IMLM.m
-- /private/EMEP.m
-- /private/BDM.m
+## Features
 
-### Miscellaneous functions
-- /private/smoothspec.m
-- /private/wavenumber.m
-- /private/makerandomsea.m
-- /private/makewavedata.m
-- /private/Hsig.m
-- /private/gsamp.m
-- /private/check_data.m
-  
+- **Directional Wave Analysis**: Estimate directional wave spectra from instrument array data
+- **Multiple Estimation Methods**: Supports IMLM, EMEP, EMLM, DFTM, and BDM methods
+- **Flexible Input**: Works with various instrument types (pressure, velocity, elevation sensors)
+- **Visualization**: Built-in plotting functions for 3D and polar spectral plots
+- **Wave Statistics**: Calculate significant wave height, peak period, and dominant direction
 
-carying original license agreement and copyright
+## Installation
 
-## License agreement
+### Basic Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/SBFRF/pyDIWASP.git
+cd pyDIWASP
+
+# Install dependencies
+pip install numpy scipy matplotlib
+```
+
+### Requirements
+
+- Python 3.6+
+- NumPy
+- SciPy
+- Matplotlib
+
+## Quick Start
+
+```python
+import numpy as np
+from dirspec import dirspec
+
+# Define instrument data structure
+ID = {
+    'layout': np.array([[0, 10, 20], [0, 0, 0], [0, 0, 0]]),  # x, y, z positions
+    'datatypes': ['pres', 'pres', 'pres'],  # instrument types
+    'depth': 10.0,  # water depth in meters
+    'fs': 2.0,  # sampling frequency in Hz
+    'data': wave_data  # nsamples x ninstruments array
+}
+
+# Define spectral matrix structure
+SM = {
+    'freqs': np.linspace(0.05, 0.5, 50),  # frequency bins in Hz
+    'dirs': np.linspace(-np.pi, np.pi, 36)  # direction bins in radians
+}
+
+# Define estimation parameters
+EP = {
+    'method': 'IMLM',  # estimation method
+    'iter': 100  # number of iterations
+}
+
+# Compute directional spectrum
+SMout, EPout = dirspec(ID, SM, EP)
+```
+
+For more detailed examples, see the [example notebook](examples/pyDIWASP_example.ipynb).
+
+## Main Functions
+
+### dirspec.py
+Main function for directional wave spectrum analysis.
+
+**Usage:**
+```python
+SMout, EPout = dirspec(ID, SM, EP, Options)
+```
+
+**Parameters:**
+- `ID`: Instrument data structure (dict)
+- `SM`: Spectral matrix structure (dict)
+- `EP`: Estimation parameters structure (dict)
+- `Options`: Optional parameters (list of key-value pairs)
+
+**Returns:**
+- `SMout`: Output spectral matrix with computed directional spectrum
+- `EPout`: Estimation parameters with actual values used
+
+### infospec.py
+Calculates and displays information about a directional spectrum.
+
+**Returns:** Significant wave height (Hsig), peak period (Tp), direction of peak period (DTp), and dominant direction (Dp).
+
+### plotspec.py
+Plots the spectral matrix in 3D or polar form.
+
+**Plot types:**
+1. 3D surface plot
+2. Polar plot
+3. 3D surface plot (compass bearings)
+4. Polar plot (compass bearings)
+
+### writespec.py
+Writes directional spectrum data to file in DIWASP format.
+
+### interpspec.py
+Interpolates a spectrum onto a different frequency/direction grid.
+
+## Private Functions
+
+The `private/` directory contains internal functions used by the main analysis routines:
+
+### Transfer Functions
+Calculate instrument response to waves:
+- `elev.py` - Surface elevation transfer function
+- `pres.py` - Pressure sensor transfer function
+- `velx.py`, `vely.py` - Horizontal velocity transfer functions
+- `wavenumber.py` - Dispersion relation solver
+
+### Estimation Methods
+Directional spectrum estimation algorithms:
+- `IMLM.py` - Iterated Maximum Likelihood Method (default)
+- `EMEP.py` - Extended Maximum Entropy Principle
+- `EMLM.py` - Extended Maximum Likelihood Method
+- (Additional methods: DFTM, BDM)
+
+### Utility Functions
+- `smoothspec.py` - Spectral smoothing
+- `hsig.py` - Significant wave height calculation
+- `check_data.py` - Data structure validation
+- `diwasp_csd.py` - Cross-spectral density estimation
+- `spectobasis.py` - Spectral basis conversion
+
+## Data Structures
+
+### Instrument Data Structure (ID)
+Dictionary with the following fields:
+- `layout`: 3×N array of instrument positions [x; y; z] in meters
+- `datatypes`: List of instrument types ('pres', 'elev', 'velx', 'vely', etc.)
+- `depth`: Water depth in meters
+- `fs`: Sampling frequency in Hz
+- `data`: N_samples × N_instruments array of measurements
+
+### Spectral Matrix Structure (SM)
+Dictionary with the following fields:
+- `freqs`: Array of frequency values
+- `dirs`: Array of direction values (radians or degrees)
+- `S`: Frequency × Direction array of spectral density (output only)
+- `funit`: Frequency unit ('Hz' or 'rad/s')
+- `dunit`: Direction unit ('rad' or 'deg')
+- `xaxisdir`: Reference axis direction (default: 90 = East)
+
+### Estimation Parameters Structure (EP)
+Dictionary with the following fields:
+- `method`: Estimation method ('IMLM', 'EMEP', 'EMLM', 'DFTM', 'BDM')
+- `nfft`: FFT length (auto-calculated if not specified)
+- `dres`: Directional resolution (default: 180)
+- `iter`: Number of iterations for iterative methods (default: 100)
+- `smooth`: Spectral smoothing ('ON' or 'OFF', default: 'ON')
+
+## Estimation Methods
+
+### IMLM (Iterated Maximum Likelihood Method)
+- **Default method**
+- Iteratively refines directional spectrum estimate
+- Good balance of accuracy and computational efficiency
+- Recommended for most applications
+
+### EMEP (Extended Maximum Entropy Principle)
+- Based on maximum entropy principle
+- Works well for narrow directional spreads
+- Suitable for swell-dominated conditions
+
+### Other Methods
+- **EMLM**: Extended Maximum Likelihood Method
+- **DFTM**: Direct Fourier Transform Method
+- **BDM**: Bayesian Directional Method
+
+## Examples
+
+See the [examples directory](examples/) for Jupyter notebooks demonstrating:
+- Basic directional spectrum estimation
+- Working with different instrument configurations
+- Comparing estimation methods
+- Visualization options
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues for:
+- Bug fixes
+- Documentation improvements
+- New features
+- Additional examples
+
+## References
+
+All implemented calculation algorithms are described in:
+
+Hashimoto, N. (1997). "Analysis of the directional wave spectrum from field data". 
+In: *Advances in Coastal Engineering Vol. 3*. Ed: Liu, P.L-F. 
+Pub: World Scientific, Singapore.
+
+## Original Copyright and License
 DIWASP, is free software; you can redistribute it and/or modify it under the terms of the 
 GNU General Public License as published by the Free Software Foundation. 
 However, the DIWASP license includes the following addendum concerning its usage:
