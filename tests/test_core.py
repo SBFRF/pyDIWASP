@@ -19,7 +19,7 @@ class TestCoreFunctions(unittest.TestCase):
         )
         self.assertAlmostEqual(result, expected)
 
-    def test_compangle_converts_to_compass_bearing(self):
+    def test_compangle_converts_90deg_angle_with_90deg_xaxis_to_180_bearing(self):
         angle = 90
         xaxisdir = 90
 
@@ -27,7 +27,7 @@ class TestCoreFunctions(unittest.TestCase):
 
         self.assertEqual(result, 180)
 
-    def test_check_data_enforces_minimum_resolution(self):
+    def test_check_data_adjusts_dres_and_nfft_to_minimum_values(self):
         ep = {"dres": 5, "nfft": 32, "iter": 10, "smooth": "off", "method": "IMLM"}
 
         validated = check_data(ep, 3)
