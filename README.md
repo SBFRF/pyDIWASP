@@ -65,6 +65,51 @@ EP = {
 SMout, EPout = dirspec(ID, SM, EP)
 ```
 
+### Complete Example with Output
+
+```python
+import numpy as np
+from pydiwasp import dirspec, infospec, plotspec
+import matplotlib.pyplot as plt
+
+# Define instrument data structure
+ID = {
+    'layout': np.array([[0, 10, 20], [0, 0, 0], [0, 0, 0]]),  # x, y, z positions
+    'datatypes': ['pres', 'pres', 'pres'],  # instrument types
+    'depth': 10.0,  # water depth in meters
+    'fs': 2.0,  # sampling frequency in Hz
+    'data': wave_data  # nsamples x ninstruments array
+}
+
+# Define spectral matrix structure
+SM = {
+    'freqs': np.linspace(0.05, 0.5, 50),  # frequency bins in Hz
+    'dirs': np.linspace(-180, 180, 36)  # direction bins in degrees
+}
+
+# Define estimation parameters
+EP = {
+    'method': 'IMLM',  # estimation method
+    'iter': 100  # number of iterations
+}
+
+# Compute directional spectrum
+SMout, EPout = dirspec(ID, SM, EP)
+
+# Get wave statistics
+Hsig, Tp, DTp, Dp = infospec(SMout)
+# Output:
+# Infospec::
+# Significant wave height: 2.5
+# Peak period: 10.0
+# Direction of peak period: 45.0 axis angle / 45.0 compass bearing
+# Dominant direction: 50.0 axis angle / 40.0 compass bearing
+
+# Visualize the spectrum
+plotspec(SMout, 1)  # 3D surface plot
+plt.show()
+```
+
 For more detailed examples, see the [example notebook](examples/pyDIWASP_example.ipynb).
 
 ## Main Functions
@@ -180,6 +225,109 @@ See the [examples directory](examples/) for Jupyter notebooks demonstrating:
 - Comparing estimation methods
 - Visualization options
 
+## Examples
+
+### Basic Usage
+
+```python
+import numpy as np
+from pydiwasp import dirspec, infospec, plotspec
+
+# Load your wave data (example)
+wave_data = np.loadtxt('wave_measurements.csv', delimiter=',')
+
+# Configure instrument array (3 pressure sensors in triangular pattern)
+ID = {
+    'layout': np.array([
+        [0, 10, 5],      # x positions (m)
+        [0, 0, 8.66],    # y positions (m)
+        [0, 0, 0]        # z positions (m, seabed = 0)
+    ]),
+    'datatypes': ['pres', 'pres', 'pres'],
+    'depth': 10.0,    # water depth (m)
+    'fs': 2.0,        # sampling frequency (Hz)
+    'data': wave_data
+}
+
+# Define output grid
+SM = {
+    'freqs': np.linspace(0.05, 0.5, 50),  # 0.05-0.5 Hz
+    'dirs': np.linspace(-180, 180, 36)     # full circle
+}
+
+# Estimation parameters (use defaults)
+EP = {'method': 'IMLM', 'iter': 100}
+
+# Compute spectrum
+SMout, EPout = dirspec(ID, SM, EP)
+```
+
+### Analyzing Results
+
+```python
+# Get wave statistics
+Hsig, Tp, DTp, Dp = infospec(SMout)
+
+print(f"Significant wave height: {Hsig:.2f} m")
+print(f"Peak period: {Tp:.1f} s")
+print(f"Peak direction: {DTp:.0f}°")
+print(f"Dominant direction: {Dp:.0f}°")
+```
+
+### Visualization
+
+```python
+import matplotlib.pyplot as plt
+
+# Create a figure with multiple plots
+fig = plt.figure(figsize=(14, 5))
+
+# 3D surface plot
+plt.subplot(121)
+plotspec(SMout, 1)  # mathematical angles
+
+# Polar plot with compass bearings
+plt.subplot(122)
+plotspec(SMout, 4)  # nautical bearings
+
+plt.tight_layout()
+plt.show()
+```
+
+### Comparing Methods
+
+```python
+# Compare IMLM and EMEP methods
+for method in ['IMLM', 'EMEP']:
+    EP = {'method': method, 'iter': 100}
+    SMout, EPout = dirspec(ID, SM, EP, ['PLOTTYPE', 0])
+    
+    Hsig, Tp, DTp, Dp = infospec(SMout)
+    print(f"\n{method} Results:")
+    print(f"  Hsig = {Hsig:.3f} m")
+    print(f"  Tp = {Tp:.2f} s")
+```
+
+### Exporting Results
+
+```python
+from pydiwasp import writespec
+
+# Write spectrum to file (DIWASP format)
+writespec(SMout, 'output_spectrum.txt')
+
+# Or save as numpy archive
+np.savez('spectrum.npz', 
+         freqs=SMout['freqs'],
+         dirs=SMout['dirs'],
+         S=SMout['S'])
+```
+
+For more examples, see:
+- [Example Notebook](examples/pyDIWASP_example.ipynb): Interactive Jupyter notebook
+- [Examples Documentation](docs/examples.rst): Additional usage patterns
+- [Test Suite](tests/): Example usage in tests
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for:
@@ -211,6 +359,30 @@ software output for any design or decision-making process.
 The GNU General Public License forms the main part of the license agreement included in the package. 
 
 Copyright (C) 2002 David Johnson   Coastal Oceanography Group, CWR, UWA, Perth
+
+## Documentation
+
+Comprehensive documentation is available covering:
+
+- **[Installation Guide](docs/installation.rst)**: Detailed installation instructions
+- **[Quick Start](docs/quickstart.rst)**: Get started in minutes
+- **[API Reference](docs/api/index.rst)**: Complete function documentation
+- **[User Guide](docs/user_guide/index.rst)**: In-depth tutorials and guides
+  - Understanding directional wave spectra
+  - Working with different instrument types
+  - Choosing estimation methods
+  - Troubleshooting common issues
+- **[Examples](docs/examples.rst)**: Practical usage examples
+- **[Developer Guide](docs/developer/contributing.rst)**: Contributing to pyDIWASP
+
+To build the documentation locally:
+
+```bash
+cd docs
+pip install -r requirements.txt
+make html
+# Open _build/html/index.html in your browser
+```
 
 ## CI/CD Pipeline
 
