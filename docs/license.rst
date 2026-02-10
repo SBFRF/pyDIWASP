@@ -91,7 +91,7 @@ Field Research Facility, US Army Corps of Engineers
 Current Maintenance
 ~~~~~~~~~~~~~~~~~~~
 
-Maintained by SBFRF (Systems, Biology, and Behavior Research Foundation)
+Maintained by SBFRF
 
 GitHub: https://github.com/SBFRF
 

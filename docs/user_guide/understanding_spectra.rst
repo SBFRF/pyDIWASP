@@ -50,8 +50,8 @@ Key Wave Parameters
 
 From the directional spectrum, we can compute important wave statistics:
 
-Significant Wave Height (Hₛᵢ��)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Significant Wave Height (Hsig)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The significant wave height is defined as:
 
@@ -65,9 +65,9 @@ where m₀ is the zeroth moment (total energy):
 
    m_0 = \\int_{0}^{\\infty} \\int_{-\\pi}^{\\pi} S(f, \\theta) \\, d\\theta \\, df
 
-Hₛᵢ𝗀 approximates the average height of the highest one-third of waves.
+Hsig approximates the average height of the highest one-third of waves.
 
-Peak Period (Tₚ)
+Peak Period (Tp)
 ~~~~~~~~~~~~~~~~~
 
 The peak period is the period (reciprocal of frequency) at which the frequency 
@@ -77,7 +77,7 @@ spectrum has its maximum:
 
    T_p = 1/f_p, \\quad \\text{where} \\quad f_p = \\arg\\max_f S(f)
 
-Dominant Direction (Dₚ)
+Dominant Direction (Dp)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The dominant direction is the direction from which the most energy arrives,
@@ -87,10 +87,10 @@ integrated over all frequencies:
 
    D_p = \\arg\\max_{\\theta} \\int_{0}^{\\infty} S(f, \\theta) \\, df
 
-Direction at Peak (DTₚ)
+Direction at Peak (DTp)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The direction at the spectral peak is the direction θ at the point (fₚ, θ) where
+The direction at the spectral peak is the direction θ at the point (fp, θ) where
 the 2D spectrum has its maximum value:
 
 .. math::
