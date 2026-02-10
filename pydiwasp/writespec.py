@@ -2,20 +2,106 @@ import numpy as np
 
 def writespec(SM, filename):
     """
-    DIWASP V1.4 function
-    writespec: writes spectrum matrix to file using DIWASP format
+    Write directional spectrum to file in DIWASP format.
     
-    writespec(SM,filename)
+    Exports a spectral matrix structure to a text file using the standard
+    DIWASP format. This format can be read by other DIWASP tools and is
+    useful for archiving results or sharing data.
     
-    Inputs:
-    SM   		A spectral matrix structure
-    filename	String containing the filename including file extension if required
+    Parameters
+    ----------
+    SM : dict
+        Spectral matrix structure to write. Required fields:
+        
+        * 'freqs' : ndarray
+            Frequency values (Hz or rad/s).
+        * 'dirs' : ndarray
+            Direction values (radians or degrees).
+        * 'S' : ndarray, shape (nfreqs, ndirs)
+            Spectral density values.
+        * 'xaxisdir' : float
+            Direction of x-axis in compass degrees (typically 90 = East).
+            
+    filename : str
+        Output filename including path and extension if desired.
+        Common extensions are .txt or .spc.
     
-    All inputs required
+    Returns
+    -------
+    None
+        The function writes to a file and returns nothing.
     
-    "help data_structures" for information on the DIWASP data structures
-
-    Copyright (C) 2002 Coastal Oceanography Group, CWR, UWA, Perth
+    File Format
+    -----------
+    The DIWASP file format is a simple text format with the following structure::
+    
+        xaxisdir
+        nfreqs
+        ndirs
+        freq1
+        freq2
+        ...
+        freqN
+        dir1
+        dir2
+        ...
+        dirM
+        999 (separator)
+        S[0,0]
+        S[0,1]
+        ...
+        S[N-1,M-1]
+    
+    All values are written as floating point numbers, one per line.
+    The spectral density values S are written in row-major order (frequency varies fastest).
+    
+    Examples
+    --------
+    Save a computed spectrum to file:
+    
+    >>> from pydiwasp import dirspec, writespec
+    >>> 
+    >>> # Compute spectrum
+    >>> SMout, EPout = dirspec(ID, SM, EP)
+    >>> 
+    >>> # Write to file
+    >>> writespec(SMout, 'output_spectrum.txt')
+    >>> 
+    >>> # Or with full path
+    >>> import os
+    >>> output_dir = '/path/to/results'
+    >>> filename = os.path.join(output_dir, 'spectrum_20240101.spc')
+    >>> writespec(SMout, filename)
+    
+    Save multiple spectra from a time series:
+    
+    >>> import numpy as np
+    >>> 
+    >>> # Process multiple time windows
+    >>> for i, data_window in enumerate(time_windows):
+    ...     ID['data'] = data_window
+    ...     SMout, EPout = dirspec(ID, SM, EP)
+    ...     writespec(SMout, f'spectrum_{i:03d}.txt')
+    
+    Notes
+    -----
+    The file format is plain text and can be inspected with any text editor.
+    The separator value 999 marks the transition from metadata to spectral data.
+    
+    Only the real part of the spectral density is written. Any imaginary
+    components are discarded.
+    
+    The saved file can be read back using custom parsing or by other DIWASP-
+    compatible software.
+    
+    See Also
+    --------
+    dirspec : Compute directional spectrum
+    
+    References
+    ----------
+    Original MATLAB version: Copyright (C) 2002 Coastal Oceanography Group,
+    CWR, UWA, Perth
     """
 
     nf = np.max(SM['freqs'].shape)

@@ -21,37 +21,157 @@ from .private.check_data import check_data
 
 def dirspec(ID, SM, EP, Options_=None):
     """
-    DIWASP V1.4 function
-    dirspec: main spectral estimation routine
-
-    [SMout,EPout]=dirspec(ID,SM,EP,{options})
-
-    Outputs:
-    SMout	    A spectral matrix structure containing the results
-    Epout		The estimation parameters structure with the values actually used for the computation including any default settings.
-
-    Inputs:
-    ID			An instrument data structure containing the measured data
-    SM   		A spectral matrix structure; data in field SM.S is ignored.
-    EP		    The estimation parameters structure. For default values enter EP as []
-    [options]  options entered as cell array with parameter/value pairs: e.g.{'MESSAGE',1,'PLOTTYPE',2};
-                    Available options with default values:
-                        'MESSAGE',1,    Level of screen display: 0,1,2 (increasing output)
-                        'PLOTTYPE',1,   Plot type: 0 none, 1 3d surface, 2 polar type plot, 3 3d surface(compass angles), 4 polar plot(compass angles)
-                        'FILEOUT',''  	 Filename for output file: empty string means no file output
-
-    Input structures ID and SM are required. Either [EP] or [options] can be included but must be in order if both are included.
-    "help data_structures" for information on the DIWASP data structures
-
-    All of the implemented calculation algorithms are as described by:
-    Hashimoto,N. 1997 "Analysis of the directional wave spectrum from field data"
-    In: Advances in Coastal Engineering Vol.3. Ed:Liu,P.L-F. Pub:World Scientific,Singapore
-
-
-    Original copyright (C) 2002 Coastal Oceanography Group, CWR, UWA, Perth
-
-    Translated by Chuan Li and Spicer Bak,
-    Field Research Facility, US Army Corps of Engineers
+    Estimate directional wave spectrum from instrument array measurements.
+    
+    This is the main function for directional wave spectrum analysis. It takes 
+    measurements from an array of wave instruments and estimates the distribution 
+    of wave energy as a function of frequency and direction.
+    
+    Parameters
+    ----------
+    ID : dict
+        Instrument data structure containing measured wave data. Required fields:
+        
+        * 'layout' : ndarray, shape (3, N)
+            Instrument positions as [x; y; z] coordinates in meters.
+            x, y are horizontal positions, z is vertical (typically 0 or depth).
+        * 'datatypes' : list of str
+            Type of measurement for each instrument. Valid types: 
+            'pres' (pressure), 'elev' (surface elevation), 
+            'velx' (x-velocity), 'vely' (y-velocity), 
+            'vels' (horizontal velocity magnitude), 'accs' (acceleration).
+        * 'depth' : float
+            Water depth in meters.
+        * 'fs' : float
+            Sampling frequency in Hz.
+        * 'data' : ndarray, shape (nsamples, ninstruments)
+            Time series measurements from each instrument.
+            
+    SM : dict
+        Spectral matrix structure defining the output grid. Required fields:
+        
+        * 'freqs' : ndarray
+            Frequency values for the output spectrum (Hz or rad/s).
+        * 'dirs' : ndarray
+            Direction values for the output spectrum (radians or degrees).
+            
+        Optional fields:
+        
+        * 'funit' : str, optional
+            Frequency units: 'Hz' (default) or 'rad/s'.
+        * 'dunit' : str, optional
+            Direction units: 'rad' (default) or 'deg'.
+        * 'xaxisdir' : float, optional
+            Direction of the x-axis in compass degrees (default: 90 = East).
+            
+    EP : dict
+        Estimation parameters. Use empty dict {} for default values. Fields:
+        
+        * 'method' : str, optional
+            Estimation method: 'IMLM' (default) or 'EMEP'.
+        * 'nfft' : int, optional
+            FFT length for spectral estimation. Auto-calculated if not provided.
+        * 'dres' : int, optional
+            Directional resolution (number of direction bins, default: 180).
+        * 'iter' : int, optional
+            Number of iterations for iterative methods (default: 100).
+        * 'smooth' : str, optional
+            Spectral smoothing: 'ON' (default) or 'OFF'.
+            
+    Options_ : list, optional
+        Optional parameters as alternating name/value pairs.
+        Example: ['MESSAGE', 1, 'PLOTTYPE', 2, 'FILEOUT', 'output.txt']
+        
+        Available options:
+        
+        * 'MESSAGE' : int, default 1
+            Level of console output (0=none, 1=normal, 2=verbose).
+        * 'PLOTTYPE' : int, default 1
+            Plot type: 0=none, 1=3D surface, 2=polar, 
+            3=3D compass, 4=polar compass.
+        * 'FILEOUT' : str, default ''
+            Output filename (empty string = no file output).
+    
+    Returns
+    -------
+    SMout : dict
+        Output spectral matrix with computed directional spectrum. Contains all
+        input SM fields plus:
+        
+        * 'S' : ndarray, shape (nfreqs, ndirs)
+            Spectral density values [m²/Hz/degree or m²s/rad].
+            
+    EPout : dict
+        Estimation parameters actually used, including any default values that
+        were applied.
+    
+    Examples
+    --------
+    Basic example with three pressure sensors in a triangular array:
+    
+    >>> import numpy as np
+    >>> from pydiwasp import dirspec
+    >>> 
+    >>> # Define instrument array
+    >>> ID = {
+    ...     'layout': np.array([[0, 10, 5], [0, 0, 8.66], [0, 0, 0]]),
+    ...     'datatypes': ['pres', 'pres', 'pres'],
+    ...     'depth': 10.0,
+    ...     'fs': 2.0,
+    ...     'data': wave_measurements  # shape: (nsamples, 3)
+    ... }
+    >>> 
+    >>> # Define output frequency-direction grid
+    >>> SM = {
+    ...     'freqs': np.linspace(0.05, 0.5, 50),  # 0.05 to 0.5 Hz
+    ...     'dirs': np.linspace(-180, 180, 36)    # -180 to 180 degrees
+    ... }
+    >>> 
+    >>> # Use default estimation parameters (IMLM method)
+    >>> EP = {'method': 'IMLM', 'iter': 100}
+    >>> 
+    >>> # Compute directional spectrum
+    >>> SMout, EPout = dirspec(ID, SM, EP)
+    >>> 
+    >>> # Access the directional spectrum
+    >>> spectrum = SMout['S']  # shape: (50, 36)
+    
+    With custom options:
+    
+    >>> # Suppress output and skip plotting
+    >>> options = ['MESSAGE', 0, 'PLOTTYPE', 0]
+    >>> SMout, EPout = dirspec(ID, SM, EP, options)
+    
+    Notes
+    -----
+    The implemented estimation algorithms are described in:
+    
+    Hashimoto, N. (1997). "Analysis of the directional wave spectrum from field data".
+    In: Advances in Coastal Engineering Vol. 3. Ed: Liu, P.L-F.
+    Pub: World Scientific, Singapore.
+    
+    The function automatically:
+    - Detects and removes trends from input data
+    - Calculates cross-spectral densities between all instrument pairs
+    - Computes wave numbers using linear wave theory
+    - Calculates instrument transfer functions
+    - Applies the selected estimation method
+    - Interpolates results onto the requested output grid
+    - Optionally smooths the spectrum
+    
+    See Also
+    --------
+    infospec : Calculate wave statistics from directional spectrum
+    plotspec : Plot directional spectrum
+    interpspec : Interpolate spectrum to different grid
+    
+    References
+    ----------
+    Original MATLAB version: Copyright (C) 2002 Coastal Oceanography Group, 
+    CWR, UWA, Perth
+    
+    Python translation: Chuan Li and Spicer Bak, Field Research Facility, 
+    US Army Corps of Engineers
     """
 
     Options = {'MESSAGE':1, 'PLOTTYPE':1, 'FILEOUT':''}
