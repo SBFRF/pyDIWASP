@@ -7,11 +7,14 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
+# Import version from package
+import pydiwasp
+
 # -- Project information -----------------------------------------------------
 project = 'pyDIWASP'
 copyright = '2024, SBFRF'
 author = 'SBFRF'
-release = '0.1.0'
+release = pydiwasp.__version__
 
 # -- General configuration ---------------------------------------------------
 extensions = [
