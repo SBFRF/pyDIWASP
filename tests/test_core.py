@@ -8,12 +8,9 @@ by testing the main functions and their expected behavior.
 
 import unittest
 import numpy as np
-from pydiwasp.infospec import compangle
-from pydiwasp.private.hsig import hsig
-from pydiwasp.private.check_data import check_data
-
-import numpy as np
 import pytest
+
+from pydiwasp.infospec import compangle
 
 try:
     from pydiwasp.private.wavenumber import wavenumber
