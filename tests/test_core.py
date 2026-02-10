@@ -8,17 +8,14 @@ by testing the main functions and their expected behavior.
 
 import unittest
 import numpy as np
-from infospec import compangle
-from private.hsig import hsig
-from private.check_data import check_data
-
-import numpy as np
 import pytest
 
+from pydiwasp.infospec import compangle
+
 try:
-    from private.wavenumber import wavenumber
-    from private.hsig import hsig
-    from private.check_data import check_data
+    from pydiwasp.private.wavenumber import wavenumber
+    from pydiwasp.private.hsig import hsig
+    from pydiwasp.private.check_data import check_data
 except ImportError as exc:
     raise ImportError(
         "Could not import pyDIWASP modules. Ensure the package is installed, "
@@ -182,7 +179,7 @@ class TestTransferFunctions:
     
     def test_elev_transfer_function(self):
         """Test elevation transfer function."""
-        from private.elev import elev
+        from pydiwasp.private.elev import elev
         
         # Test parameters
         w = 2 * np.pi * np.array([0.1, 0.2])  # Angular frequencies
@@ -198,7 +195,7 @@ class TestTransferFunctions:
     
     def test_pres_transfer_function(self):
         """Test pressure transfer function."""
-        from private.pres import pres
+        from pydiwasp.private.pres import pres
         
         w = 2 * np.pi * np.array([0.1, 0.2])
         dirs = np.array([0, np.pi/4, np.pi/2])

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from private.spectobasis import spectobasis
+from .private.spectobasis import spectobasis
 
 def plotspec(SM, ptype):
     """

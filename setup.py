@@ -15,7 +15,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SBFRF/pyDIWASP",
-    packages=find_packages(),
+    packages=find_packages(include=['pydiwasp', 'pydiwasp.*']),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
