@@ -51,18 +51,33 @@ def dirspec(ID, SM, EP, Options_=None):
         Spectral matrix structure defining the output grid. Required fields:
         
         * 'freqs' : ndarray
-            Frequency values for the output spectrum (Hz or rad/s).
+            Frequency values for the output spectrum. Values should match
+            the units specified by 'funit' (see below).
         * 'dirs' : ndarray
-            Direction values for the output spectrum (radians or degrees).
+            Direction values for the output spectrum. Values should match
+            the convention specified by 'dunit' (see below).
             
         Optional fields:
         
         * 'funit' : str, optional
-            Frequency units: 'Hz' (default) or 'rad/s'.
+            Frequency units (case-insensitive). Accepted values:
+            
+            - 'hz' (default): Frequencies in cycles per second (Hz)
+            - Any other value: Treated as angular frequency (rad/s)
+            
         * 'dunit' : str, optional
-            Direction units: 'rad' (default) or 'deg'.
+            Direction convention (case-insensitive). Accepted values:
+            
+            - 'cart' (default): Cartesian/mathematical directions in degrees,
+              measured counter-clockwise from x-axis
+            - 'naut': Nautical/meteorological directions in degrees,
+              measured clockwise from North (compass bearings)
+            
+            Note: Both conventions expect directions in degrees, not radians.
+            
         * 'xaxisdir' : float, optional
-            Direction of the x-axis in compass degrees (default: 90 = East).
+            Direction of the positive x-axis in compass degrees (default: 90 = East).
+            Used for coordinate transformations.
             
     EP : dict
         Estimation parameters. Use empty dict {} for default values. Fields:

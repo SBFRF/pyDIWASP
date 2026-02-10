@@ -17,9 +17,9 @@ def plotspec(SM, ptype):
         Required fields:
         
         * 'freqs' : ndarray
-            Frequency values (Hz or rad/s).
+            Frequency values. Should match units specified by 'funit'.
         * 'dirs' : ndarray
-            Direction values (radians or degrees).
+            Direction values. Should match convention specified by 'dunit'.
         * 'S' : ndarray, shape (nfreqs, ndirs)
             Spectral density values.
             
@@ -29,9 +29,18 @@ def plotspec(SM, ptype):
             Direction of x-axis in compass degrees (default: 90 = East).
             Used for plot types 3 and 4.
         * 'funit' : str, optional
-            Frequency units: 'Hz' or 'rad/s'.
+            Frequency units (case-insensitive):
+            
+            - 'hz' (default): Frequencies in Hz
+            - Other: Treated as rad/s
+            
         * 'dunit' : str, optional
-            Direction units: 'rad' or 'deg'.
+            Direction convention (case-insensitive):
+            
+            - 'cart' (default): Cartesian degrees (counter-clockwise from x-axis)
+            - 'naut': Nautical degrees (clockwise from North)
+            
+            Both conventions expect directions in degrees.
             
     ptype : int
         Plot type selection:

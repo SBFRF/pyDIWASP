@@ -16,9 +16,10 @@ def infospec(SM):
         Required fields:
         
         * 'freqs' : ndarray
-            Frequency values (Hz or rad/s).
+            Frequency values. Must be in Hz (not rad/s).
         * 'dirs' : ndarray
-            Direction values (radians or degrees).
+            Direction values. Must be in degrees (axis angles, counter-clockwise
+            from x-axis). The function assumes cartesian convention.
         * 'S' : ndarray, shape (nfreqs, ndirs)
             Spectral density values.
             
@@ -26,7 +27,7 @@ def infospec(SM):
         
         * 'xaxisdir' : float, optional
             Direction of x-axis in compass degrees (default: 90 = East).
-            Used for converting to compass bearings.
+            Used for converting to compass bearings in output.
     
     Returns
     -------
@@ -64,8 +65,8 @@ def infospec(SM):
     Infospec::
     Significant wave height: 2.5
     Peak period: 10.0
-    Direction of peak period: 45.0 axis angle / 45.0 compass bearing
-    Dominant direction: 50.0 axis angle / 40.0 compass bearing
+    Direction of peak period: 45.0 axis angle / 225.0 compass bearing
+    Dominant direction: 50.0 axis angle / 220.0 compass bearing
     >>> 
     >>> print(f"Wave height: {Hsig:.2f} m")
     Wave height: 2.50 m
@@ -144,14 +145,14 @@ def compangle(dirs, xaxisdir):
     >>> # Convert 45° axis angle to compass bearing (x-axis points East)
     >>> bearing = compangle(45, 90)
     >>> print(bearing)
-    45.0
+    225.0
     >>> 
     >>> # Convert multiple directions
     >>> import numpy as np
     >>> dirs = np.array([0, 45, 90, 180, 270])
     >>> bearings = compangle(dirs, 90)
     >>> print(bearings)
-    [90. 45. 0. 270. 180.]
+    [270. 225. 180.  90.   0.]
     
     Notes
     -----

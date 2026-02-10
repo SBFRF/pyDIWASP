@@ -10,7 +10,8 @@ def interpspec(SMin, SMout, method='linear'):
     
     This function resamples a directional spectrum from one frequency-direction
     grid to another. It uses 2D interpolation in frequency-direction space and
-    preserves the total wave energy (significant wave height) to within 2%.
+    attempts to preserve the total wave energy (significant wave height). A warning
+    is issued if Hsig increases by more than 2%.
     
     Parameters
     ----------
@@ -59,14 +60,18 @@ def interpspec(SMin, SMout, method='linear'):
     >>> # Compute high-resolution spectrum
     >>> SM_hires = {
     ...     'freqs': np.linspace(0.05, 0.5, 100),
-    ...     'dirs': np.linspace(-180, 180, 72)
+    ...     'dirs': np.linspace(-180, 180, 72),
+    ...     'funit': 'hz',
+    ...     'dunit': 'cart'
     ... }
     >>> SMout_hires, EPout = dirspec(ID, SM_hires, EP)
     >>> 
     >>> # Define coarser output grid
     >>> SM_coarse = {
     ...     'freqs': np.linspace(0.05, 0.5, 25),
-    ...     'dirs': np.linspace(-180, 180, 36)
+    ...     'dirs': np.linspace(-180, 180, 36),
+    ...     'funit': 'hz',
+    ...     'dunit': 'cart'
     ... }
     >>> 
     >>> # Interpolate to coarse grid
@@ -77,7 +82,9 @@ def interpspec(SMin, SMout, method='linear'):
     >>> # Zoom in on specific frequency range
     >>> SM_zoom = {
     ...     'freqs': np.linspace(0.1, 0.2, 50),  # Focus on 0.1-0.2 Hz
-    ...     'dirs': np.linspace(-180, 180, 36)
+    ...     'dirs': np.linspace(-180, 180, 36),
+    ...     'funit': 'hz',
+    ...     'dunit': 'cart'
     ... }
     >>> SMout_zoom = interpspec(SMout_hires, SM_zoom)
     
@@ -99,9 +106,10 @@ def interpspec(SMin, SMout, method='linear'):
     
     Warnings
     --------
-    If the significant wave height changes by more than 2% during interpolation,
+    If the significant wave height increases by more than 2% during interpolation,
     the function warns that the output grid may be too coarse. Consider using
-    a finer frequency or direction resolution in SMout.
+    a finer frequency or direction resolution in SMout. Note that the function
+    only warns on increases, not decreases in Hsig.
     
     See Also
     --------

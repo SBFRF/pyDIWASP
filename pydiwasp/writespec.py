@@ -53,7 +53,9 @@ def writespec(SM, filename):
         S[N-1,M-1]
     
     All values are written as floating point numbers, one per line.
-    The spectral density values S are written in row-major order (frequency varies fastest).
+    The spectral density values S are flattened using NumPy's default C-order,
+    where the last axis (direction) varies fastest and the first axis (frequency)
+    varies slowest.
     
     Examples
     --------
